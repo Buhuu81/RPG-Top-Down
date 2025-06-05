@@ -19,8 +19,8 @@ body {
 
   border: 2px solid #555;
   background-color: #222; /* Background if game-map doesn't fill it, should be rarely seen */
-  overflow: hidden;
-  position: relative;
+  overflow: hidden; /* Crucial to clip content that overflows */
+  position: relative; /* Essential for positioning children absolutely */
   box-shadow: 0 0 15px rgba(0,0,0,0.5);
 }
 
@@ -58,7 +58,7 @@ body {
   height: 25px;
   background-color: dodgerblue;
   border: 2px solid royalblue;
-  border-radius: 50%;
+  border-radius: 50%; /* Makes the player a circle */
   position: absolute;
   left: 0;
   top: 0;
