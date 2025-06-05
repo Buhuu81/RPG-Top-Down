@@ -2,81 +2,280 @@
 
 body {
   margin: 0;
-  overflow: hidden; /* Prevents unwanted scrollbars */
+  overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh; /* Ensures body takes full viewport height */
+  min-height: 100vh;
   background-color: #333;
   font-family: sans-serif;
 }
 
-#game-container {
-  width: 90vw;
-  max-width: 1200px;
-  aspect-ratio: 16 / 9; /* Maintain a 16:9 aspect ratio */
-  max-height: 90vh; /* Ensure it fits vertically even if wide */
-
+#main-game-area {
+  display: flex;
+  width: 95vw;
+  max-width: 1400px;
+  height: 95vh;
+  max-height: 95vh;
   border: 2px solid #555;
-  background-color: #222; /* Background if game-map doesn't fill it, should be rarely seen */
-  overflow: hidden; /* Crucial to clip content that overflows */
-  position: relative; /* Essential for positioning children absolutely */
   box-shadow: 0 0 15px rgba(0,0,0,0.5);
+  overflow: hidden;
+}
+
+#game-container {
+  flex-grow: 1;
+  height: 100%;
+
+  background-color: #222;
+  overflow: hidden;
+  position: relative;
 }
 
 #game-map {
   width: 100%;
   height: 100%;
 
-  /* --- ABSOLUTELY CRUCIAL: THESE MUST BE DELETED if present. No background on the container! --- */
-  /* background-color: #4CAF50; */
-  /* background-image: ... */
-  /* background-size: ... */
-  /* --- END OF DELETED LINES --- */
+  background-image: url('images/Map starter.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 
-  display: grid; /* Use CSS Grid for layout */
+  display: grid;
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 5; /* Give map a z-index, but lower than player */
+  z-index: 5;
 }
 
-/* Styles for individual map tiles */
 .tile {
-  box-sizing: border-box; /* Include padding/border in size */
-  border: 1px solid rgba(0,0,0,0.1); /* Subtle grid lines */
+  box-sizing: border-box;
+  border: 1px solid rgba(0,0,0,0.1);
 }
 
-/* Example tile types with colors */
-.tile.grass { background-color: #4CAF50; }
-.tile.wall { background-color: #795548; }
-.tile.water { background-color: #2196F3; }
-.tile.door { background-color: #CDDC39; }
+.tile.grass { background-color: transparent; }
+.tile.wall { background-color: rgba(121, 85, 72, 0.5); }
+.tile.water { background-color: rgba(33, 150, 243, 0.5); }
+.tile.door {
+  background-color: #8B4513;
+  border: 2px solid #5A2D0C;
+  box-shadow: inset 0 0 5px rgba(0,0,0,0.3);
+}
 
 #player {
-  width: 25px; /* Slightly larger player for better visibility */
-  height: 25px;
-  background-color: dodgerblue;
-  border: 2px solid royalblue;
-  border-radius: 50%; /* Makes the player a circle */
   position: absolute;
-  left: 0;
-  top: 0;
-  z-index: 10; /* Ensures player is definitively above map tiles and map container */
+  z-index: 10;
 }
 
-/* Media Query for Phone Landscape View */
+#ui-container {
+  width: 280px;
+  background-color: #1a1a1a;
+  color: #eee;
+  padding: 15px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 20px;
+  border-left: 2px solid #555;
+}
+
+#ui-container h2 {
+  color: #aaffaa;
+  margin-top: 0;
+  margin-bottom: 10px;
+  text-align: center;
+  width: 100%;
+}
+
+#character-display {
+  width: 100%;
+  background-color: #2a2a2a;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  text-align: center;
+}
+
+.char-model-container {
+  position: relative;
+  width: 180px;
+  height: 200px;
+  margin: 0 auto 10px;
+  border: 1px solid #555;
+  border-radius: 5px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.char-model-container .char-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.equip-slot {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background-color: rgba(70, 70, 70, 0.5);
+  border: 1px dashed #777;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.8em;
+  color: #ccc;
+  text-align: center;
+  line-height: 1;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+/* Specific slot positioning - TWEAK THESE VALUES */
+/* Note: The 'right' for some slots assumes a mirrored layout for gear icons. */
+/* You'll need to fine-tune these based on your image and desired layout. */
+.head-slot { top: 12px; right: 10px; } /* Head slot (top right) */
+.chest-slot { top: 60px; right: 10px; } /* Chest slot (middle right) */
+/* NEW: Legs Slot positioning */
+.legs-slot { top: 99px; right: 10px; } /* Adjust 'top' to place it under chest */
+.gloves-slot { top: 60px; left: 10px; } /* Gloves slot (middle left, same row as chest if symmetrical) */
+.boots-slot { bottom: 18px; right: 10px; } /* Boots slot (bottom right, adjust based on legs) */
+.weapon-right-slot { top: 12px; left: 10px; } /* Right Hand Weapon (top left) */
+.weapon-left-slot { bottom: 10px; left: 10px; } /* Left Hand Weapon (bottom left) */
+
+
+/* You might want to add text labels for empty slots, e.g., using CSS :before or JS */
+.head-slot::before { content: "Head"; }
+.chest-slot::before { content: "Chest"; }
+.legs-slot::before { content: "Legs"; } /* NEW: Label for Legs slot */
+.gloves-slot::before { content: "Gloves"; }
+.boots-slot::before { content: "Boots"; }
+.weapon-right-slot::before { content: "R-Hand"; }
+.weapon-left-slot::before { content: "L-Hand"; }
+
+
+/* Styles for equipped items */
+.equip-slot img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+
+#inventory-panel {
+  width: 100%;
+  background-color: #2a2a2a;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+#inventory-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.inventory-item {
+  background-color: #3a3a3a;
+  border: 1px solid #444;
+  padding: 8px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.inventory-item:hover {
+  background-color: #4a4a4a;
+}
+
+.inventory-item.selected {
+  background-color: #007bff;
+  border-color: #0056b3;
+}
+
+.item-icon {
+  width: 30px;
+  height: 30px;
+  background-color: #555;
+  border: 1px solid #666;
+  border-radius: 3px;
+  margin-right: 10px;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.item-icon img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.item-name {
+  flex-grow: 1;
+  font-size: 0.9em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+/* Media Query for Phone Landscape View (adjusting for new layout) */
 @media (max-height: 500px) and (orientation: landscape) {
-    #game-container {
+    #main-game-area {
+        flex-direction: row;
         width: 98vw;
         height: 95vh;
-        max-width: none; /* Remove max-width constraint for phones */
-        max-height: none; /* Remove max-height constraint for phones */
+        max-width: none;
+        max-height: none;
         border-width: 1px;
         box-shadow: none;
     }
-    #player {
-        width: 20px; /* Even smaller player on tiny phone screens */
-        height: 20px;
+    #game-container {
+        flex-grow: 1;
+        width: 70%;
+    }
+    #ui-container {
+        width: 30%;
+        padding: 5px;
+        font-size: 0.8em;
+    }
+    #ui-container h2 {
+      font-size: 1em;
+    }
+    .char-model-container {
+      width: 100px;
+      height: 130px;
+    }
+    .equip-slot {
+      width: 20px;
+      height: 20px;
+      font-size: 0.6em;
+    }
+    /* Re-fine tune these for mobile if needed */
+    .head-slot { top: 5px; right: 5px; }
+    .chest-slot { top: 40px; right: 5px; }
+    .legs-slot { top: 70px; right: 5px; } /* Adjusted for mobile */
+    .gloves-slot { top: 40px; left: 5px; }
+    .boots-slot { bottom: 5px; right: 5px; }
+    .weapon-right-slot { top: 5px; left: 5px; }
+    .weapon-left-slot { bottom: 5px; left: 5px; }
+
+
+    .item-icon {
+      width: 20px;
+      height: 20px;
     }
 }

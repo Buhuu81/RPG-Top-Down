@@ -7,9 +7,33 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div id="game-container">
-      <div id="game-map">
-        <div id="player"></div>
+    <div id="main-game-area">
+      <div id="game-container">
+        <div id="game-map">
+          <div id="player"></div>
+        </div>
+      </div>
+
+      <div id="ui-container">
+        <div id="character-display">
+          <h2>Player Stats & Gear</h2>
+          <div class="char-model-container">
+            <img src="images/armorsystem.png" alt="Character Equipment Slots" class="char-image">
+            <div class="equip-slot head-slot" data-slot="head"></div>
+            <div class="equip-slot chest-slot" data-slot="chest"></div>
+            <div class="equip-slot legs-slot" data-slot="legs"></div>
+            <div class="equip-slot gloves-slot" data-slot="gloves"></div>
+            <div class="equip-slot boots-slot" data-slot="boots"></div>
+            <div class="equip-slot weapon-right-slot" data-slot="weaponRight"></div>
+            <div class="equip-slot weapon-left-slot" data-slot="weaponLeft"></div>
+          </div>
+        </div>
+
+        <div id="inventory-panel">
+          <h2>Inventory</h2>
+          <ul id="inventory-list">
+            </ul>
+        </div>
       </div>
     </div>
 
