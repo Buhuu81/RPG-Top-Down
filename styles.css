@@ -1,0 +1,58 @@
+body {
+  margin: 0;
+  overflow: hidden; /* Prevents unwanted scrollbars */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* Ensures body takes full viewport height */
+  background-color: #333; /* Dark background for the page */
+  font-family: sans-serif;
+}
+
+#game-container {
+  width: 800px; /* Fixed width for our game window */
+  height: 600px; /* Fixed height for our game window */
+  border: 2px solid #555; /* A subtle border around the game area */
+  background-color: #222; /* Darker background inside the container */
+  overflow: hidden; /* Clips content that overflows */
+  position: relative; /* Crucial for positioning children absolutely */
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5); /* Adds a nice shadow effect */
+}
+
+#game-map {
+  width: 100%;
+  height: 100%;
+  /* A simple green background for our initial map */
+  background-color: #4caf50; /* Green grass color */
+  background-image: repeating-linear-gradient(
+      0deg,
+      #388e3c,
+      #388e3c 10px,
+      transparent 10px,
+      transparent 20px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      #388e3c,
+      #388e3c 10px,
+      transparent 10px,
+      transparent 20px
+    );
+  background-size: 20px 20px; /* Creates a subtle grid effect on the map */
+  position: absolute; /* Positions it relative to game-container */
+  top: 0;
+  left: 0;
+}
+
+#player {
+  width: 30px;
+  height: 30px;
+  background-color: dodgerblue; /* Blue color for our player */
+  border: 2px solid royalblue; /* A border for the player */
+  border-radius: 50%; /* Makes the player a circle */
+  position: absolute; /* Crucial for moving the player with JS */
+  transition: transform 0.3s ease-out; /* Smooth animation when moving */
+  /* Initial position will be set by JavaScript */
+  left: 0;
+  top: 0;
+}
